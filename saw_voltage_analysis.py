@@ -28,7 +28,7 @@ class extract_data():
 	dir: string, the position of the data and name of the specfile
 	x,y: strings, name of the motor used for the scan, and of the detector'''
 	
-	def __init__(self, sample, first_scan, last_scan, V_step, dir = 'data/2017-05-18_sample_M1_01.spec', x, y):
+	def __init__(self, sample, first_scan, last_scan, V_step, dir, x, y):
 		self.sample = sample
 		self.fs = first_scan
 		self.ls = last_scan
