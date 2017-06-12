@@ -19,9 +19,16 @@ from analysis_lib import *
 
 
 class extract_data():
-	''''''
+	'''This class is used to extract data from specfiles.
+	It uses the specfile class, writte by Ivo Zizak
 	
-	def __init__(self, sample, first_scan, last_scan, V_step, dir, x, y):
+	sample: string, the name of the sample
+	first/last _scan: integers, first and last scan to be analyzed
+	V_step: integer, the voltage step between two scans
+	dir: string, the position of the data and name of the specfile
+	x,y: strings, name of the motor used for the scan, and of the detector'''
+	
+	def __init__(self, sample, first_scan, last_scan, V_step, dir = 'data/2017-05-18_sample_M1_01.spec', x, y):
 		self.sample = sample
 		self.fs = first_scan
 		self.ls = last_scan
@@ -69,6 +76,10 @@ class extract_data():
 class voltage_scan():
 	''' This class was tested only with data from sample where the 0-th order is always the stronger in the diffraction
 	pattern.	
+	
+	sample: string, sample name
+	
+	
 	TO DO: automatically guess the distance between the peaks'''
 	def __init__(self, sample):
 		self.sample = sample
@@ -98,6 +109,7 @@ class voltage_scan():
 		return shift
 		
 	def find_maxima(self, plot):
+		'''if plot == 1 the data are plotted, if plot != 0 they are not plotted'''
 		self.plot = plot
 		delta = 0.01
 		start = self.theta[0]
@@ -132,7 +144,14 @@ class voltage_scan():
 		
 	def fit_voltage_scan(self, delta_theta, show_plot):
 		'''This methods works only if the data have been normalized, and if the shift has been calculated, 
-		and the maxima have been found'''
+		and the maxima have been found
+		
+		if plot == 1 the data are plotted, if plot != 0 they are not plotted
+		
+		delta_theta: float, the distance between two satellites
+		
+		TO DO: find a way to automatically gues the distance between two satellites. Here I could use the results from find maxima, 
+		but unless the data are really smooth it is not a reliable method'''
 		self.delta_theta = delta_theta
 		self.show_plot = show_plot
 		#~ fitting the V=0 scan, just to find initial parameters for the fit 
@@ -188,6 +207,9 @@ class voltage_scan():
 		#~ plt.clf()
 	
 	def intensity_vs_voltage(self, V_in, V_fin,V_step,show_plot):
+		''' This method produces the plot of the intensity of the satellites vs the voltage applied.
+		
+		V_in/_fin/_step: integers, initial and final voltage of the scan, and the voltage step'''
 		self.V_in = V_in
 		self.V_fin = V_fin
 		self.V_step = V_step
@@ -219,7 +241,9 @@ class voltage_scan():
 		
 
 
-
+########################
+#FUNCTIONS TO TEST THE CLASSES#
+########################
 def test_extract_data():
 	print 'Testing the class extract_from_spec'
 	dir = 'data/2017-05-18_sample_M1_01.spec'
@@ -240,5 +264,5 @@ def test_voltage_scan():
 	
 	
 if __name__ == "__main__":
-	#~ test_extract_data()
+	test_extract_data()
 	test_voltage_scan()
